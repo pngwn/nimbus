@@ -16,7 +16,7 @@
     "no-unreachable": 2,
     "valid-typeof": 2,
     "quote-props": [2, "as-needed"],
-    "one-var": [2, "never"],
+    "one-var": 0,
     "prefer-arrow-callback": 2,
     "prefer-const": [2, { "destructuring": "all" }],
     "arrow-spacing": 2,
@@ -48,6 +48,7 @@
     "sourceType": "module"
   },
   "settings": {
-    "import/resolver": { "typescript": {} }
+    "import/resolver": { "typescript": {} },
+    "svelte3/extensions": [".html"]
   }
 }

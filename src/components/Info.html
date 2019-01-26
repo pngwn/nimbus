@@ -1,0 +1,32 @@
+<script>
+  import { searchMachine } from '../state/machineStore.js';
+  import { onMount } from 'svelte';
+
+  let events;
+
+  $: events = searchMachine.nextEvents($searchMachine);
+
+  onMount(() => {
+    console.log($searchMachine);
+  });
+</script>
+
+<h1>State: {$searchMachine}</h1>
+
+<h2>Possible Events</h2>
+{#each events as event}
+<button on:click="{() => searchMachine.send(event)}">{event}</button>
+{/each}
+
+<!-- <p>idle events</p>
+<button on:click="{ () => searchMachine.send('SEARCH_PLACE') }">
+  SEARCH_PLACE
+</button>
+
+<p>searchingplace events</p>
+<button on:click="{ () => searchMachine.send('PLACES_LOADED') }">
+  PLACES_LOADED
+</button>
+<button on:click="{ () => searchMachine.send('FAIL') }">FAIL</button> -->
+
+<style></style>

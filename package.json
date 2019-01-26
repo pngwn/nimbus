@@ -7,7 +7,7 @@
     "build": "sapper build --legacy",
     "export": "sapper export --legacy",
     "start": "node __sapper__/build",
-    "lint": "eslint 'src/**' 'test/*.ts'",
+    "lint": "eslint 'src/**'",
     "test": "yarn lint & jest --verbose",
     "test:watch": "jest --verbose --watch",
     "test:cov": "yarn lint && jest --verbose --coverage",
