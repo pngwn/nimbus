@@ -1,0 +1,78 @@
+<script>
+  import { afterUpdate } from 'svelte';
+
+  import SearchInput from './SearchInput.html';
+  import SearchResults from './SearchResults.html';
+
+  import { search, myStore } from '../state/machineStore.js';
+
+  export let onData;
+  let currentData;
+
+  afterUpdate(() => {
+    if ($myStore.weather && currentData !== $myStore.weather) {
+      onData($myStore.weather);
+      currentData = $myStore.weather;
+    }
+  });
+</script>
+
+<div class="search-wrap">
+  <SearchInput
+    loading="{$search === 'searchingplace'}"
+    changeCb="{(val) => search.send('SEARCH_PLACE', val)}"
+  ></SearchInput>
+
+  {#if $myStore.places}
+  <SearchResults
+    results="{$myStore.places}"
+    clickCb="{(payload) => search.send('SEARCH_WEATHER', payload)}"
+  ></SearchResults>
+
+  {/if}
+
+  <h1>{$search}</h1>
+</div>
+
+<style>
+  .search-wrap {
+    height: 100%;
+    opacity: 0;
+    animation: top-in 0.5s 0.5s forwards;
+  }
+
+  .options-leave .search-wrap {
+    transform: translateY(0%);
+    opacity: 1;
+    animation: top-out 0.5s ease-in-out forwards;
+  }
+
+  div.loading-dots {
+    position: absolute;
+    left: 50%;
+    margin-left: -0.5em;
+    top: 0;
+    margin-top: 20px;
+  }
+
+  @keyframes top-in {
+    0% {
+      transform: translateY(-30px);
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes top-out {
+    0% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-30px);
+      opacity: 0;
+    }
+  }
+</style>

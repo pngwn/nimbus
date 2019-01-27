@@ -1,5 +1,16 @@
+<script>
+  import Header from '../components/Header.html';
+  import Info from '../components/Info.html';
+  import Forecast from '../components/Forecast.html';
+
+  export let child, path;
+
+  let about = false;
+</script>
+
 <Header segment="{child.segment}"></Header>
-<Info></Info>
+<Info {about}></Info>
+<Forecast></Forecast>
 
 <main>
   <svelte:component this="{child.component}" {...child.props} />
@@ -15,9 +26,3 @@
     box-sizing: border-box;
   }
 </style>
-
-<script>
-  import Header from '../components/Header.html';
-  import Info from '../components/Info.html';
-  export let child, path;
-</script>

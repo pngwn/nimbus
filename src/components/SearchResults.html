@@ -1,0 +1,67 @@
+<script>
+  import { afterUpdate } from 'svelte';
+  export let results, clickCb;
+
+  afterUpdate(() => console.log(results));
+</script>
+
+<ul class="search-list">
+  {#each results as place}
+  <li on:click="{() => clickCb({place: place.description})}">
+    {place.description}
+  </li>
+  {/each}
+</ul>
+
+<style>
+  .search-list {
+    text-align: center;
+  }
+
+  ul {
+    font-size: 2.5rem;
+    font-weight: 100;
+    list-style: none;
+    /* margin-top: 22px; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 40%;
+    margin: auto;
+    text-align: center;
+    background: #b1695a;
+    /* transform: translateY(-5px); */
+    /* padding-top: 5px; */
+    position: relative;
+    z-index: 1;
+    border-radius: 3px;
+    margin-top: 5px;
+    color: #eee;
+    overflow: hidden;
+  }
+
+  ul li {
+    padding: 0;
+    color: #fff;
+    font-weight: 300;
+    padding: 10px;
+    width: 100%;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  ul li:hover,
+  ul li.selected {
+    background: #644749;
+  }
+
+  @media only screen and (max-width: 800px) {
+    ul {
+      font-size: 2rem;
+    }
+    ul li {
+      font-weight: 400;
+    }
+  }
+</style>
