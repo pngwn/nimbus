@@ -15,12 +15,47 @@
       currentData = $myStore.weather;
     }
   });
+
+  // const options = {
+  //   enableHighAccuracy: true,
+  //   timeout: 5000,
+  //   maximumAge: 0,
+  // };
+
+  // function success(pos) {
+  //   search.send('SEARCH_WEATHER', pos);
+  //   var crd = pos.coords;
+
+  //   console.log('Your current position is:');
+  //   console.log(`Latitude : ${crd.latitude}`);
+  //   console.log(`Longitude: ${crd.longitude}`);
+  //   console.log(`More or less ${crd.accuracy} meters.`);
+  // }
+
+  // function error(err) {}
+
+  const getGeo = () => {
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        search.send('SEARCH_WEATHER', pos);
+      },
+      err => {
+        search.send('FAIL', err);
+        console.warn(`ERROR(${err.code}): ${err.message}`);
+      },
+      {
+        timeout: 5000,
+        maximumAge: 0,
+      }
+    );
+  };
 </script>
 
 <div class="search-wrap">
   <SearchInput
     loading="{$search === 'searchingplace'}"
     changeCb="{(val) => search.send('SEARCH_PLACE', val)}"
+    getGeoCb="{getGeo}"
   ></SearchInput>
 
   {#if $myStore.places}

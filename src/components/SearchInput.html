@@ -1,7 +1,7 @@
 <script>
   import { uuid } from '../helpers/uuid.js';
 
-  export let changeCb;
+  export let changeCb, getGeoCb;
   let inputValue = '',
     id;
 
@@ -18,7 +18,7 @@
     bind:value="{inputValue}"
     on:input="{handleInput}"
   />
-  <button class="location-button" on:click="{ () => {} }">
+  <button class="location-button" on:click="{getGeoCb}">
     Use your location
   </button>
 </div>

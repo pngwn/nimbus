@@ -55,70 +55,69 @@ const endpoints = {
 
 export const searchActions = {
   searchingplace: [
-    function searchPlaces(payload, store) {
+    async function searchPlaces(payload, store) {
       store.update(v => ({ ...v, id: payload.id }));
 
       const params = {
         input: payload.value,
       };
 
-      return get(endpoints.location, params)
-        .then(v => v.json())
-        .then(v => {
-          let correctId;
-          store.update(state => {
-            if (state.id !== payload.id) {
-              correctId = false;
-              return state;
-            }
-            correctId = true;
-            return { ...state, places: v.predictions };
-          });
+      try {
+        const places = await (await get(endpoints.location, params)).json();
 
-          if (correctId) return { event: 'PLACES_LOADED' };
-        })
-        .catch(e => {
-          store.update(state => ({ ...state, error: e.message }));
-          return { event: 'PLACE_FAIL' };
+        let correctId;
+        store.update(state => {
+          if (state.id !== payload.id) {
+            correctId = false;
+            return state;
+          }
+          correctId = true;
+          return { ...state, places: places.predictions };
         });
+
+        if (correctId) return { event: 'PLACES_LOADED' };
+      } catch (e) {
+        store.update(state => ({ ...state, error: e.message }));
+        return { event: 'PLACE_FAIL' };
+      }
     },
   ],
   searchingWeather: [
-    function searchWeather(payload, store) {
-      const latlngParams = {
-        address: payload.place,
-      };
+    async function searchWeather(payload, store) {
+      try {
+        let coords = payload.coords
+          ? {
+            lat: payload.coords.latitude,
+            lng: payload.coords.longitude,
+            units: 'uk2',
+          }
+          : undefined;
 
-      return (
-        get(endpoints.geometry, latlngParams)
-          .then(v => v.json())
-          .then(v => {
-            const time = Math.round(Date.now() / 1000);
-            const weatherParams = {
-              lat: v.results[0].geometry.location.lat,
-              lng: v.results[0].geometry.location.lat,
-              units: 'uk2',
-            };
+        if (!coords) {
+          const r = await (await get(endpoints.geometry, {
+            address: payload.place,
+          })).json();
 
-            return Promise.all([
-              get(endpoints.weather, weatherParams).then(r => r.json()),
-              get(endpoints.weather, { ...weatherParams, time }).then(r =>
-                r.json()
-              ),
-            ]);
-          })
-          //.then(v => v.map(r => r))
-          .then(v => {
-            store.update(state => ({ ...state, weather: parseWeather(v) }));
+          coords = {
+            lat: r.results[0].geometry.location.lat,
+            lng: r.results[0].geometry.location.lat,
+            units: 'uk2',
+          };
+        }
 
-            return { event: 'WEATHER_LOADED' };
-          })
-          .catch(e => {
-            console.log('error:', e);
-            store.update(state => ({ ...state, error: e.message }));
-            return { event: 'FAIL' };
-          })
-      );
+        const time = Math.round(Date.now() / 1000);
+        let weather = await Promise.all([
+          get(endpoints.weather, coords),
+          get(endpoints.weather, { ...coords, time }),
+        ]);
+        weather = await Promise.all(weather.map(r => r.json()));
+
+        store.update(state => ({ ...state, weather: parseWeather(weather) }));
+        return { event: 'WEATHER_LOADED' };
+      } catch (e) {
+        store.update(state => ({ ...state, error: e.message }));
+        return { event: 'FAIL' };
+      }
     },
   ],
 };
