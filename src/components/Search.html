@@ -4,35 +4,17 @@
   import SearchInput from './SearchInput.html';
   import SearchResults from './SearchResults.html';
 
-  import { search, myStore } from '../state/machineStore.js';
+  import { search } from '../state';
 
   export let onData;
   let currentData;
 
   afterUpdate(() => {
-    if ($myStore.weather && currentData !== $myStore.weather) {
-      onData($myStore.weather);
-      currentData = $myStore.weather;
+    if ($search.weather && currentData !== $search.weather) {
+      onData($search.weather);
+      currentData = $search.weather;
     }
   });
-
-  // const options = {
-  //   enableHighAccuracy: true,
-  //   timeout: 5000,
-  //   maximumAge: 0,
-  // };
-
-  // function success(pos) {
-  //   search.send('SEARCH_WEATHER', pos);
-  //   var crd = pos.coords;
-
-  //   console.log('Your current position is:');
-  //   console.log(`Latitude : ${crd.latitude}`);
-  //   console.log(`Longitude: ${crd.longitude}`);
-  //   console.log(`More or less ${crd.accuracy} meters.`);
-  // }
-
-  // function error(err) {}
 
   const getGeo = () => {
     navigator.geolocation.getCurrentPosition(
@@ -58,15 +40,15 @@
     getGeoCb="{getGeo}"
   ></SearchInput>
 
-  {#if $myStore.places}
+  {#if $search.places.length}
   <SearchResults
-    results="{$myStore.places}"
+    results="{$search.places}"
     clickCb="{(payload) => search.send('SEARCH_WEATHER', payload)}"
   ></SearchResults>
 
   {/if}
 
-  <h1>{$search}</h1>
+  <h1>{$search.state}</h1>
 </div>
 
 <style>

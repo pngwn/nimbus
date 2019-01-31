@@ -1,0 +1,16 @@
+<div class="box-content {time}-box">
+  <h1>{ time }</h1>
+  <p class="box-temp">{ weather.temperatureHi } °</p>
+  <transition>
+    {#if active && !options}
+    <div class="box-extra">
+      <p class="box-temp temp-min">{ weather.temperatureLow } °</p>
+      <p class="box-status">{ weather.summary }</p>
+      <p class="box-wind">
+        Wind: { weather.windDirection } { weather.windSpeed }mph
+      </p>
+      <p class="box-humidity">Humidity: { weather.humidity }%</p>
+    </div>
+    {/if}
+  </transition>
+</div>

@@ -1,23 +1,30 @@
 import { writable } from 'svelte/store';
 
-export function createMachineStore(machine, actions, store) {
-  const { subscribe, update } = writable(machine.initial);
-
+export function createMachineStore(machine, actions = {}, store = null) {
   let currentState = machine.initial;
+  const { subscribe, update } = writable(store);
+  update(state => ({ ...state, state: currentState }));
 
   function send(event, payload) {
     let stateChanged = false;
+
     update(state => {
-      if (!machine.states[state].on) return state;
-      if (!machine.states[state].on[event]) return state;
+      if (machine.on && machine.on[event]) {
+        currentState = machine.on[event];
+      } else if (
+        machine.states[state.state].on &&
+        machine.states[state.state].on[event]
+      ) {
+        currentState = machine.states[state.state].on[event];
+      }
 
       stateChanged = true;
-      currentState = machine.states[state].on[event];
-      return currentState;
+
+      return { ...state, state: currentState };
     });
 
-    if (!stateChanged) return;
-    if (!actions[currentState]) return;
+    if (!stateChanged || !actions[currentState]) return;
+
     actions[currentState].forEach(fn => {
       const returnVal = fn(payload, store);
 

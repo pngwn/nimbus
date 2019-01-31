@@ -1,13 +1,17 @@
 <script>
   import { afterUpdate } from 'svelte';
+  import { squish, fade } from '../transitions.js';
   export let results, clickCb;
 
   afterUpdate(() => console.log(results));
 </script>
 
 <ul class="search-list">
-  {#each results as place}
-  <li on:click="{() => clickCb({place: place.description})}">
+  {#each results as place, i}
+  <li
+    transition:fade="{{delay: i*150, duration: 250}}"
+    on:click="{() => clickCb({place: place.description})}"
+  >
     {place.description}
   </li>
   {/each}
@@ -30,7 +34,7 @@
     width: 40%;
     margin: auto;
     text-align: center;
-    background: #b1695a;
+    /* background: #b1695a; */
     /* transform: translateY(-5px); */
     /* padding-top: 5px; */
     position: relative;
@@ -39,6 +43,7 @@
     margin-top: 5px;
     color: #eee;
     overflow: hidden;
+    /* transform-origin: 0 0; */
   }
 
   ul li {
@@ -48,7 +53,10 @@
     padding: 10px;
     width: 100%;
     cursor: pointer;
-    transition: 0.2s;
+    /* transition: 0.2s; */
+    background: #b1695a;
+    border-radius: 3px;
+    margin: 1.5px;
   }
 
   ul li:hover,

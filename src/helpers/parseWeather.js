@@ -61,17 +61,17 @@ const formatWeather = blockedWeather => {
   }
 
   return {
-    today: {
-      morning: weatherParsed['1'],
-      afternoon: weatherParsed['2'],
-      evening: weatherParsed['3'],
-      night: weatherParsed['4'],
-    },
-    tomorrow: {
-      morning: weatherParsed['5'],
-      afternoon: weatherParsed['6'],
-      evening: weatherParsed['7'],
-      night: weatherParsed['8'],
-    },
+    today: [
+      weatherParsed['1'],
+      weatherParsed['2'],
+      weatherParsed['3'],
+      weatherParsed['4'],
+    ],
+    tomorrow: [
+      weatherParsed['5'],
+      weatherParsed['6'],
+      weatherParsed['7'],
+      weatherParsed['8'],
+    ],
   };
 };
