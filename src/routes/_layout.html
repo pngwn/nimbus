@@ -8,14 +8,12 @@
 
   import { onMount } from 'svelte';
 
-
   export let child, path;
 
   let options = false,
-      day = 'today',
-      time = 0;
-console.log(data[day])
-
+    day = 'today',
+    time = 0,
+    timeKey = ['morning', 'afternoon', 'evening', 'night'];
 </script>
 
 <main>
@@ -45,13 +43,20 @@ console.log(data[day])
   <Info about="false"></Info>
   {/if}
 
-  <Forecast>
+  <Forecast activeDay={day} {options} activeTime={timeKey[time]}>
     {#each data[day] as block, i}
     <!--  -->
-    <ForecastBlock>
+    <ForecastBlock  on:click="{(e) => time = i}"
+                    time={timeKey[i]}
+                    activeTime={timeKey[time]}>
 
-        <ForecastData  weather="block" active="{i === time}" />
+        <ForecastData weather="{block}"
+                      active="{i === time}"
+                      {options}
+                      time={timeKey[i]}/>
+
     </ForecastBlock>
+
     {/each}
   </Forecast>
 </main>

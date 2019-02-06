@@ -1,5 +1,8 @@
 <p>hi</p>
-<div class="forecast">
+<div
+  class="forecast {activeTime}-active forecast-{activeDay}"
+  class:options-on="{options}"
+>
   <slot></slot>
 </div>
 
