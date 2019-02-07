@@ -1,0 +1,60 @@
+<script>
+  import Sun from './Sun.html';
+  import Snow from './Snow.html';
+  import Rain from './Rain.html';
+  import Moon from './Moon.html';
+  import Cloud from './Cloud.html';
+
+  export let currentIcons, currentColors, activeTime;
+  const precipitation = currentIcons.includes('snow') ? Snow : Rain;
+</script>
+
+<svg
+  class="icon {activeTime}"
+  viewBox="0 0 111 198"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  {#if currentIcons.includes('sun')}
+  <Sun colors="{currentColors}" class="accent-col" />
+  {/if}
+
+  <svelte:component
+    this="{precipitation}"
+    colors="{currentColors}"
+    class="primary-col"
+  />
+
+  {#if currentIcons.includes('moon')}
+  <Moon colors="{currentColors}" class="accent-col" />
+  {/if}
+  <!--  -->
+  {#if currentIcons.includes('cloud')}
+  <Cloud colors="{currentColors}" class="primary-col" />
+  {/if}
+</svg>
+
+<style>
+  svg {
+    position: absolute;
+    width: 20vw;
+    max-width: 250px;
+    left: 0;
+    top: 10%;
+    bottom: 0;
+    z-index: 998;
+    overflow: visible;
+    backface-visibility: hidden;
+    pointer-events: none;
+  }
+
+  @media only screen and (max-width: 800px) {
+    svg {
+      width: 40%;
+      right: 55vw;
+      left: unset;
+      top: 0;
+      z-index: 999;
+      overflow: visible;
+    }
+  }
+</style>

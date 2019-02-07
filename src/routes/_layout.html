@@ -3,6 +3,7 @@
   import Forecast from '../components/Forecast.html';
   import ForecastBlock from '../components/ForecastBlock.html';
   import ForecastData from '../components/ForecastData.html';
+  import Icons from '../components/icons/index.html';
 
   import data from '../state/_fake-data.js';
 
@@ -17,6 +18,7 @@
 </script>
 
 <main>
+
   <svg
     on:click="{() => options = !options}"
     class="logo"
@@ -59,6 +61,8 @@
 
     {/each}
   </Forecast>
+
+  <Icons currentIcons={data[day][time].icons}/>
 </main>
 
 <style>
