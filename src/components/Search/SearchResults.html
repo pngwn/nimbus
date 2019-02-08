@@ -1,6 +1,6 @@
 <script>
   import { afterUpdate } from 'svelte';
-  import { squish, fade } from '../transitions.js';
+  import {  fade } from 'svelte/transition';
   export let results, clickCb;
 
   afterUpdate(() => console.log(results));

@@ -58,8 +58,8 @@ export const searchActions = {
   searchingWeather: [searchWeather],
 };
 
-async function searchPlaces(payload, store) {
-  store.update(v => ({ ...v, id: payload.id }));
+async function searchPlaces(payload, update) {
+  update(v => ({ ...v, id: payload.id }));
 
   const params = {
     input: payload.value,
@@ -69,7 +69,7 @@ async function searchPlaces(payload, store) {
     const places = await (await get(endpoints.location, params)).json();
 
     let correctId = true;
-    store.update(state => {
+    update(state => {
       if (state.id !== payload.id) {
         correctId = false;
         return state;
@@ -80,12 +80,12 @@ async function searchPlaces(payload, store) {
 
     if (correctId) return { event: 'PLACES_LOADED' };
   } catch (e) {
-    store.update(state => ({ ...state, error: e.message }));
+    update(state => ({ ...state, error: e.message }));
     return { event: 'PLACE_FAIL' };
   }
 }
 
-async function searchWeather(payload, store) {
+async function searchWeather(payload, update) {
   try {
     let coords = payload.coords
       ? {
@@ -114,11 +114,11 @@ async function searchWeather(payload, store) {
     ]);
     weather = await Promise.all(weather.map(r => r.json()));
 
-    store.update(state => ({ ...state, weather: parseWeather(weather) }));
+    update(state => ({ ...state, weather: parseWeather(weather) }));
 
     return { event: 'WEATHER_LOADED' };
   } catch (e) {
-    store.update(state => ({ ...state, error: e.message }));
+    update(state => ({ ...state, error: e.message }));
     return { event: 'FAIL' };
   }
 }

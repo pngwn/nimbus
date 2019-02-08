@@ -5013,10 +5013,10 @@ sane@^2.0.0:
   optionalDependencies:
     fsevents "^1.2.3"
 
-sapper@0.26.0-alpha.4:
-  version "0.26.0-alpha.4"
-  resolved "https://registry.yarnpkg.com/sapper/-/sapper-0.26.0-alpha.4.tgz#770ce9f958952ebc660c5a6631647ca53aba13fb"
-  integrity sha512-Qkgueiwc6/5+tlNjmGbFLaYoydgqMA58g/HYFZrZP1P6GFx5KQp0g7KgEu+LfLfFINk9tZdMPFxTkpF8Z6Y0zg==
+sapper@0.26.0-alpha.5:
+  version "0.26.0-alpha.5"
+  resolved "https://registry.yarnpkg.com/sapper/-/sapper-0.26.0-alpha.5.tgz#62c500ce888552bae7b2aa4d25375c7139233bec"
+  integrity sha512-BpPfj4XzwHzRiY02haE0f/gxl7+p48CKrSsHYrsrkOgtVjjQ6VSuYIYZdgWlXHUeLEQQxxPVEQ+O+oPVtNJxGg==
   dependencies:
     html-minifier "^3.5.21"
     shimport "0.0.14"
@@ -5399,10 +5399,10 @@ supports-color@^5.3.0:
   dependencies:
     has-flag "^3.0.0"
 
-svelte@3.0.0-beta.2:
-  version "3.0.0-beta.2"
-  resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.0.0-beta.2.tgz#d9e8329abe9a866e45500990e4de60fd23af031a"
-  integrity sha512-7E+HzH9R1VXtmMB0DfGVtG32m+KAPhgjptsf+jM5Qetu4ULQgfv4TQ6IGrPiQ0wquXISRlV8t7qeqkADzDgu3A==
+svelte@3.0.0-beta.3:
+  version "3.0.0-beta.3"
+  resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.0.0-beta.3.tgz#7989243e028f0eeed48d27d3af45d5d6a4e82082"
+  integrity sha512-kEPbvpmzZqVsUMgMQ1DFx1W+05hWiHVSQaQYPv55AzcCAeXHRZD9N55Pv4LKH6sOHvvNhkb4GVLSK2yBQZn5CQ==
 
 symbol-tree@^3.2.2:
   version "3.2.2"

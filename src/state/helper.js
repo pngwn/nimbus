@@ -26,7 +26,7 @@ export function createMachineStore(machine, actions = {}, store = null) {
     if (!stateChanged || !actions[currentState]) return;
 
     actions[currentState].forEach(fn => {
-      const returnVal = fn(payload, store);
+      const returnVal = fn(payload, update);
 
       if (!returnVal) return;
 

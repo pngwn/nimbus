@@ -4,10 +4,19 @@
   import Rain from './Rain.html';
   import Moon from './Moon.html';
   import Cloud from './Cloud.html';
+  import { colormap, iconColors, iconPositions } from '../../state'
 
-  export let currentIcons, currentColors, activeTime;
-  const precipitation = currentIcons.includes('snow') ? Snow : Rain;
+  export let currentIcons, activeTime;
+  let currentColors, width, isMobile, precipitation, positions;
+
+
+  $: currentColors = $iconColors[$colormap[activeTime]];
+  $: positions = width < 800 ? $iconPositions['small'] : $iconPositions['big'];
+  $: precipitation = currentIcons.includes('snow') ? Snow : Rain;
+
 </script>
+
+<svelte:window bind:innerWidth={width}/>
 
 <svg
   class="icon {activeTime}"
@@ -15,21 +24,21 @@
   xmlns="http://www.w3.org/2000/svg"
 >
   {#if currentIcons.includes('sun')}
-  <Sun colors="{currentColors}" class="accent-col" />
+  <Sun color="{currentColors.accent}" class="accent-col" />
   {/if}
 
   <svelte:component
     this="{precipitation}"
-    colors="{currentColors}"
+    color="{currentColors.primary}"
     class="primary-col"
   />
 
   {#if currentIcons.includes('moon')}
-  <Moon colors="{currentColors}" class="accent-col" />
+  <Moon color="{currentColors.accent}" class="accent-col" />
   {/if}
   <!--  -->
   {#if currentIcons.includes('cloud')}
-  <Cloud colors="{currentColors}" class="primary-col" />
+  <Cloud color="{currentColors.primary}" class="primary-col" />
   {/if}
 </svg>
 
