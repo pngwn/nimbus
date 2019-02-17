@@ -11,42 +11,42 @@ export const search = createMachineStore(
 );
 
 export const iconPositions = writable({
-	big: {
-	  morning: 0.25,
-	  afternoon: 0.416,
-	  evening: 0.58,
-	  night: 0.75
-	},
-	small: {
-	  morning: 0.06,
-	  afternoon: 0.225,
-	  evening: 0.39,
-	  night: 0.56
-	}
+  big: {
+    morning: [0.25, 0],
+    afternoon: [0.42, 0],
+    evening: [0.58, 0],
+    night: [0.75, 0],
+  },
+  small: {
+    morning: [0, 0.06],
+    afternoon: [0, 0.225],
+    evening: [0, 0.39],
+    night: [0, 0.56],
+  },
 });
 
 export const iconColors = writable({
-    morning: {
-      primary: 'dark',
-      accent: 'light'
-    },
-    afternoon: {
-      primary: 'darkest',
-      accent: 'dark'
-    },
-    evening: {
-      primary: 'lightest',
-      accent: 'darkest'
-    },
-    night: {
-      primary: 'light',
-      accent: 'dark'
-    }
+  morning: {
+    primary: 'dark',
+    accent: 'light',
+  },
+  afternoon: {
+    primary: 'darkest',
+    accent: 'dark',
+  },
+  evening: {
+    primary: 'lightest',
+    accent: 'darkest',
+  },
+  night: {
+    primary: 'light',
+    accent: 'dark',
+  },
 });
 
 export const colormap = writable({
-    lightest: "#e3bb88",
-    light: "#db9864",
-    dark: "#b1695a",
-    darkest: "#644749"
+  lightest: '#e3bb88',
+  light: '#db9864',
+  dark: '#b1695a',
+  darkest: '#644749',
 });

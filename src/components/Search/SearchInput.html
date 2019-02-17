@@ -2,16 +2,19 @@
   import { uuid } from '../../helpers/uuid.js';
 
   export let changeCb, getGeoCb;
-  let inputValue = '',
-    id;
+  let inputValue = '', id;
 
   function handleInput() {
-    if (!inputValue) return;
+
+    if (!inputValue) {
+      return
+    };
 
     id = uuid();
     changeCb({ value: inputValue, id });
   }
 </script>
+
 <div class="input">
   <input
     class="input-field"

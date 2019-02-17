@@ -1,49 +1,37 @@
 <script>
-  import Sun from './Sun.html';
-  import Snow from './Snow.html';
-  import Rain from './Rain.html';
-  import Moon from './Moon.html';
-  import Cloud from './Cloud.html';
-  import { colormap, iconColors, iconPositions } from '../../state'
+  import sun from './Sun.html';
+  import snow from './Snow.html';
+  import rain from './Rain.html';
+  import moon from './Moon.html';
+  import cloud from './Cloud.html';
+  import { colormap, iconColors, iconPositions } from '../../state';
 
   export let currentIcons, activeTime;
-  let currentColors, width, isMobile, precipitation, positions;
+  let currentColors, width, positions;
 
+  $: currentColors = {
+    accent: $colormap[$iconColors[activeTime].accent],
+    primary: $colormap[$iconColors[activeTime].primary],
+  };
 
-  $: currentColors = $iconColors[$colormap[activeTime]];
+  const iconComponents = { sun, snow, rain, moon, cloud };
+
   $: positions = width < 800 ? $iconPositions['small'] : $iconPositions['big'];
-  $: precipitation = currentIcons.includes('snow') ? Snow : Rain;
-
 </script>
 
-<svelte:window bind:innerWidth={width}/>
+<svelte:window bind:innerWidth="{width}" />
 
-<svg
+<div
+  style="transform: translate({positions[activeTime][0] * (width-60)}px, {positions[activeTime][1] * (width-60)}px); transition: 0.5s;"
   class="icon {activeTime}"
-  viewBox="0 0 111 198"
-  xmlns="http://www.w3.org/2000/svg"
 >
-  {#if currentIcons.includes('sun')}
-  <Sun color="{currentColors.accent}" class="accent-col" />
-  {/if}
-
-  <svelte:component
-    this="{precipitation}"
-    color="{currentColors.primary}"
-    class="primary-col"
-  />
-
-  {#if currentIcons.includes('moon')}
-  <Moon color="{currentColors.accent}" class="accent-col" />
-  {/if}
-  <!--  -->
-  {#if currentIcons.includes('cloud')}
-  <Cloud color="{currentColors.primary}" class="primary-col" />
-  {/if}
-</svg>
+  {#each currentIcons as icon (icon)}
+  <svelte:component this="{iconComponents[icon]}" color="{currentColors}" />
+  {/each}
+</div>
 
 <style>
-  svg {
+  div {
     position: absolute;
     width: 20vw;
     max-width: 250px;
@@ -54,6 +42,7 @@
     overflow: visible;
     backface-visibility: hidden;
     pointer-events: none;
+    transform-origin: 50% 50%;
   }
 
   @media only screen and (max-width: 800px) {

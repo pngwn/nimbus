@@ -22,14 +22,7 @@
     "arrow-spacing": 2,
     "no-inner-declarations": 0
   },
-  "overrides": [
-    {
-      "files": ["**.d.ts"],
-      "rules": {
-        "import/export": 0
-      }
-    }
-  ],
+
   "env": {
     "es6": true,
     "browser": true,
@@ -41,14 +34,12 @@
     "plugin:import/errors",
     "plugin:import/warnings"
   ],
-  "plugins": ["typescript", "import", "svelte3"],
-  "parser": "typescript-eslint-parser",
+  "plugins": ["import", "svelte3"],
   "parserOptions": {
     "ecmaVersion": 6,
     "sourceType": "module"
   },
   "settings": {
-    "import/resolver": { "typescript": {} },
     "svelte3/extensions": [".html"]
   }
 }

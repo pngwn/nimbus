@@ -89,10 +89,10 @@ async function searchWeather(payload, update) {
   try {
     let coords = payload.coords
       ? {
-        lat: payload.coords.latitude,
-        lng: payload.coords.longitude,
-        units: 'uk2',
-      }
+          lat: payload.coords.latitude,
+          lng: payload.coords.longitude,
+          units: 'uk2',
+        }
       : undefined;
 
     if (!coords) {
