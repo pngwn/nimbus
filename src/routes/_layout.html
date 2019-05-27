@@ -10,7 +10,7 @@
 
   export let child, path;
 
-  let options = false,
+  let options = true,
     day = 'today',
     time = 0;
   const timeKey = ['morning', 'afternoon', 'evening', 'night'];
@@ -18,7 +18,7 @@
 
 <main>
 
-  <Logo click="{() => options = !options}" {options}/>
+  <Logo on:click="{() => options = !options}" {options}/>
 
   {#if options}
     <Info about="false"></Info>
@@ -44,7 +44,9 @@
 
   </Forecast>
 
-  <Icons currentIcons={data[day][time].icons} activeTime={timeKey[time]}/>
+  <Icons currentIcons={data[day][time].icons}
+         activeTime={timeKey[time]}
+         {options}/>
 
 </main>
 

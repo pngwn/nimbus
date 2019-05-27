@@ -2,13 +2,13 @@
   import { uuid } from '../../helpers/uuid.js';
 
   export let changeCb, getGeoCb;
-  let inputValue = '', id;
+  let inputValue = '',
+    id;
 
   function handleInput() {
-
     if (!inputValue) {
-      return
-    };
+      return;
+    }
 
     id = uuid();
     changeCb({ value: inputValue, id });
@@ -69,6 +69,8 @@
     transition: 0.2s;
     text-align: center;
     padding: 7px 0 5px 0;
+    border-bottom-left-radius: 1px;
+    border-bottom-right-radius: 1px;
   }
 
   .input-field:focus {

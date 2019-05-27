@@ -6,23 +6,25 @@
   import cloud from './Cloud.html';
   import { colormap, iconColors, iconPositions } from '../../state';
 
-  export let currentIcons, activeTime;
-  let currentColors, width, positions;
+  export let currentIcons, activeTime, options;
+  let width;
+
+  const iconComponents = { sun, snow, rain, moon, cloud };
 
   $: currentColors = {
     accent: $colormap[$iconColors[activeTime].accent],
     primary: $colormap[$iconColors[activeTime].primary],
   };
-
-  const iconComponents = { sun, snow, rain, moon, cloud };
-
   $: positions = width < 800 ? $iconPositions['small'] : $iconPositions['big'];
+  $: translateX = positions[activeTime][0] * (width - 60) || 0;
+  $: translateY = positions[activeTime][1] * (width - 60) || 0;
+  $: opacity = options ? 0 : 1;
 </script>
 
 <svelte:window bind:innerWidth="{width}" />
 
 <div
-  style="transform: translate({positions[activeTime][0] * (width-60)}px, {positions[activeTime][1] * (width-60)}px); transition: 0.5s;"
+  style="transform: translate({translateX}px, {translateY}px); opacity: {opacity}"
   class="icon {activeTime}"
 >
   {#each currentIcons as icon (icon)}
@@ -43,10 +45,11 @@
     backface-visibility: hidden;
     pointer-events: none;
     transform-origin: 50% 50%;
+    transition: 0.5s;
   }
 
   @media only screen and (max-width: 800px) {
-    svg {
+    div {
       width: 40%;
       right: 55vw;
       left: unset;

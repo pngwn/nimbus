@@ -1,4 +1,13 @@
-<svg viewBox="0 0 111 198" xmlns="http://www.w3.org/2000/svg">
+<script>
+  import { fly } from 'svelte/transition';
+  export let color;
+</script>
+
+<svg
+  out:fly="{{duration:500, y: 0}}"
+  viewBox="0 0 111 198"
+  xmlns="http://www.w3.org/2000/svg"
+>
   <g fill="{color.accent}">
     <path
       class="moon"
@@ -12,9 +21,24 @@
     top: 0;
     position: absolute;
     z-index: 0;
+    opacity: 0;
+    transform: translateY(50px);
+    animation: fly 0.5s 0.5s forwards;
   }
 
   g {
     transition: 0.5s;
+  }
+
+  @keyframes fly {
+    from {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0px);
+    }
   }
 </style>

@@ -36,8 +36,9 @@
   ],
   "plugins": ["import", "svelte3"],
   "parserOptions": {
-    "ecmaVersion": 6,
-    "sourceType": "module"
+    "ecmaVersion": 2017,
+    "sourceType": "module",
+    "ecmaFeatures": { "experimentalObjectRestSpread": true }
   },
   "settings": {
     "svelte3/extensions": [".html"]

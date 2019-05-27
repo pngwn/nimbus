@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import { parseWeather } from '../helpers/parseWeather';
 
 export const searchMachine = {
@@ -65,24 +66,42 @@ async function searchPlaces(payload, update) {
     input: payload.value,
   };
 
-  try {
-    const places = await (await get(endpoints.location, params)).json();
+  // try {
+  //   const places = await (await get(endpoints.location, params)).json();
 
-    let correctId = true;
-    update(state => {
-      if (state.id !== payload.id) {
-        correctId = false;
-        return state;
-      }
+  //   let correctId = true;
+  //   update(state => {
+  //     if (state.id !== payload.id) {
+  //       correctId = false;
+  //       return state;
+  //     }
 
-      return { ...state, places: places.predictions };
-    });
+  //     return { ...state, places: places.predictions };
+  //   });
 
-    if (correctId) return { event: 'PLACES_LOADED' };
-  } catch (e) {
-    update(state => ({ ...state, error: e.message }));
-    return { event: 'PLACE_FAIL' };
-  }
+  //   if (correctId) return { event: 'PLACES_LOADED' };
+  // } catch (e) {
+  //   update(state => ({ ...state, error: e.message }));
+  //   return { event: 'PLACE_FAIL' };
+  // }
+
+  const places = {
+    predictions: [
+      { description: 'one' },
+      { description: 'two' },
+      { description: 'three' },
+      { description: 'four' },
+      { description: 'five' },
+    ],
+  };
+  update(state => {
+    if (state.id !== payload.id) {
+      correctId = false;
+      return state;
+    }
+
+    return { ...state, places: places.predictions };
+  });
 }
 
 async function searchWeather(payload, update) {
