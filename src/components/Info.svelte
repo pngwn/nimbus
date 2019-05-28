@@ -1,6 +1,6 @@
 <script>
-  import Search from './Search/Search.html';
-  import About from './About.html';
+  import Search from './Search/Search.svelte';
+  import About from './About.svelte';
 
   let about;
 
@@ -8,13 +8,6 @@
     console.log(data);
   }
 </script>
-
-<div class="info">
-  <Search onData="{setWeatherData}"></Search>
-  {#if about}
-  <About></About>
-  {/if}
-</div>
 
 <style>
   .info {
@@ -85,3 +78,10 @@
     }
   }
 </style>
+
+<div class="info">
+  <Search onData={setWeatherData} />
+  {#if about}
+    <About />
+  {/if}
+</div>

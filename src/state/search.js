@@ -48,10 +48,17 @@ export const searchMachine = {
   },
 };
 
+const mode = process.env.NODE_ENV;
+const dev = mode === 'development';
+
 const endpoints = {
-  location: 'https://us-central1-nimbus-200817.cloudfunctions.net/getLocation?',
-  geometry: 'https://us-central1-nimbus-200817.cloudfunctions.net/getLatLong?',
-  weather: 'https://us-central1-nimbus-200817.cloudfunctions.net/getWeather?',
+  location: dev
+    ? 'http://localhost:34567/.netlify/functions/getLocation?'
+    : 'https://us-central1-nimbus-200817.cloudfunctions.net/getLocation?',
+  weather: dev
+    ? 'http://localhost:34567/.netlify/functions/getWeather?'
+    : 'https://us-central1-nimbus-200817.cloudfunctions.net/getLatLong?',
+  //weather: 'https://us-central1-nimbus-200817.cloudfunctions.net/getWeather?',
 };
 
 export const searchActions = {
@@ -66,72 +73,58 @@ async function searchPlaces(payload, update) {
     input: payload.value,
   };
 
-  // try {
-  //   const places = await (await get(endpoints.location, params)).json();
+  try {
+    const places = await (await get(endpoints.location, params)).json();
 
-  //   let correctId = true;
-  //   update(state => {
-  //     if (state.id !== payload.id) {
-  //       correctId = false;
-  //       return state;
-  //     }
+    let correctId = true;
+    update(state => {
+      if (state.id !== payload.id) {
+        correctId = false;
+        return state;
+      }
 
-  //     return { ...state, places: places.predictions };
-  //   });
+      return { ...state, places };
+    });
 
-  //   if (correctId) return { event: 'PLACES_LOADED' };
-  // } catch (e) {
-  //   update(state => ({ ...state, error: e.message }));
-  //   return { event: 'PLACE_FAIL' };
-  // }
+    if (correctId) return { event: 'PLACES_LOADED' };
+  } catch (e) {
+    update(state => ({ ...state, error: e.message }));
+    return { event: 'PLACE_FAIL' };
+  }
 
-  const places = {
-    predictions: [
-      { description: 'one' },
-      { description: 'two' },
-      { description: 'three' },
-      { description: 'four' },
-      { description: 'five' },
-    ],
-  };
-  update(state => {
-    if (state.id !== payload.id) {
-      correctId = false;
-      return state;
-    }
+  // const places = {
+  //   predictions: [
+  //     { description: 'one' },
+  //     { description: 'two' },
+  //     { description: 'three' },
+  //     { description: 'four' },
+  //     { description: 'five' },
+  //   ],
+  // };
+  // update(state => {
+  //   if (state.id !== payload.id) {
+  //     correctId = false;
+  //     return state;
+  //   }
 
-    return { ...state, places: places.predictions };
-  });
+  //   return { ...state, places: places.predictions };
+  // });
 }
 
 async function searchWeather(payload, update) {
+  const time = ~~(Date.now() / 1000);
+
   try {
-    let coords = payload.coords
-      ? {
-          lat: payload.coords.latitude,
-          lng: payload.coords.longitude,
-          units: 'uk2',
-        }
-      : undefined;
+    const coords = {
+      ...(payload.coords && {
+        lat: payload.coords.latitude,
+        lng: payload.coords.longitude,
+      }),
+      address: payload.place,
+      time,
+    };
 
-    if (!coords) {
-      const r = await (await get(endpoints.geometry, {
-        address: payload.place,
-      })).json();
-
-      coords = {
-        lat: r.results[0].geometry.location.lat,
-        lng: r.results[0].geometry.location.lat,
-        units: 'uk2',
-      };
-    }
-
-    const time = Math.round(Date.now() / 1000);
-    let weather = await Promise.all([
-      get(endpoints.weather, coords),
-      get(endpoints.weather, { ...coords, time }),
-    ]);
-    weather = await Promise.all(weather.map(r => r.json()));
+    const weather = await (await get(endpoints.weather, coords)).json();
 
     update(state => ({ ...state, weather: parseWeather(weather) }));
 
@@ -156,7 +149,7 @@ function get(url, params) {
   }
 
   const config = {
-    headers: { 'Access-Control-Allow-Origin': '*' },
+    mode: 'cors',
   };
 
   return fetch(getUrl, config);

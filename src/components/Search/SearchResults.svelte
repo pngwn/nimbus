@@ -12,18 +12,9 @@
     easing: quintOut,
     css: (t, u) => `opacity: ${t}; transform: scaleY(${t});`,
   });
-</script>
 
-<ul class="search-list">
-  {#each results as place, i}
-  <li
-    in:squish="{{delay: i*100, duration: 250}}"
-    on:click="{() => clickCb({place: place.description})}"
-  >
-    <span in:fade={{delay: 50+(i*100), duration: 250}}>{place.description}</span>
-  </li>
-  {/each}
-</ul>
+  $: console.log(results);
+</script>
 
 <style>
   .search-list {
@@ -80,3 +71,13 @@
     }
   }
 </style>
+
+<ul class="search-list">
+  {#each results as place, i}
+    <li
+      in:squish={{ delay: i * 100, duration: 250 }}
+      on:click={() => clickCb({ place })}>
+      <span in:fade={{ delay: 50 + i * 100, duration: 250 }}> {place} </span>
+    </li>
+  {/each}
+</ul>

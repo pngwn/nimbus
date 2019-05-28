@@ -4,14 +4,15 @@ import { icons, windDirection } from './weatherHelpers';
 import { max, min, mean, mode } from './arrayMaths';
 
 export const parseWeather = array => {
+  console.log(array);
   let blockedWeather = {};
   const offset = array[0].offset;
   const currentDate = addHours(getUTCDate(), offset);
 
-  array.forEach(weather => {
+  array.forEach(({ data }) => {
     blockedWeather = Object.assign(
       blockedWeather,
-      arrayWeather(weather, offset, currentDate)
+      arrayWeather(data, offset, currentDate)
     );
   });
 
@@ -21,7 +22,7 @@ export const parseWeather = array => {
 const arrayWeather = (weatherArr, offset, currentDate) => {
   const blockedWeather = {};
 
-  weatherArr.hourly.data.forEach(el => {
+  weatherArr.forEach(el => {
     const elDate = addHours(getUTCDate(el.time * 1000), offset);
 
     const dateDifference = differenceInDays(

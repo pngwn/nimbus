@@ -1,8 +1,8 @@
 <script>
   import { afterUpdate } from 'svelte';
 
-  import SearchInput from './SearchInput.html';
-  import SearchResults from './SearchResults.html';
+  import SearchInput from './SearchInput.svelte';
+  import SearchResults from './SearchResults.svelte';
 
   import { search } from '../../state';
 
@@ -31,25 +31,9 @@
       }
     );
   };
+
+  $: console.log($search);
 </script>
-
-<div class="search-wrap">
-  <SearchInput
-    loading="{$search === 'searchingplace'}"
-    changeCb="{(val) => search.send('SEARCH_PLACE', val)}"
-    getGeoCb="{getGeo}"
-  ></SearchInput>
-
-  {#if $search.places.length}
-  <SearchResults
-    results="{$search.places}"
-    clickCb="{(payload) => search.send('SEARCH_WEATHER', payload)}"
-  ></SearchResults>
-
-  {/if}
-
-  <h1>{$search.state}</h1>
-</div>
 
 <style>
   .search-wrap {
@@ -93,3 +77,18 @@
     }
   }
 </style>
+
+<div class="search-wrap">
+  <SearchInput
+    loading={$search === 'searchingplace'}
+    changeCb={val => search.send('SEARCH_PLACE', val)}
+    getGeoCb={getGeo} />
+
+  {#if $search.places.length}
+    <SearchResults
+      results={$search.places}
+      clickCb={payload => search.send('SEARCH_WEATHER', payload)} />
+  {/if}
+
+  <h1>{$search.state}</h1>
+</div>

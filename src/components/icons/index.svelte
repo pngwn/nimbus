@@ -1,9 +1,9 @@
 <script>
-  import sun from './Sun.html';
-  import snow from './Snow.html';
-  import rain from './Rain.html';
-  import moon from './Moon.html';
-  import cloud from './Cloud.html';
+  import sun from './Sun.svelte';
+  import snow from './Snow.svelte';
+  import rain from './Rain.svelte';
+  import moon from './Moon.svelte';
+  import cloud from './Cloud.svelte';
   import { colormap, iconColors, iconPositions } from '../../state';
 
   export let currentIcons, activeTime, options;
@@ -20,17 +20,6 @@
   $: translateY = positions[activeTime][1] * (width - 60) || 0;
   $: opacity = options ? 0 : 1;
 </script>
-
-<svelte:window bind:innerWidth="{width}" />
-
-<div
-  style="transform: translate({translateX}px, {translateY}px); opacity: {opacity}"
-  class="icon {activeTime}"
->
-  {#each currentIcons as icon (icon)}
-  <svelte:component this="{iconComponents[icon]}" color="{currentColors}" />
-  {/each}
-</div>
 
 <style>
   div {
@@ -59,3 +48,13 @@
     }
   }
 </style>
+
+<svelte:window bind:innerWidth={width} />
+
+<div
+  style="transform: translate({translateX}px, {translateY}px); opacity: {opacity}"
+  class="icon {activeTime}">
+  {#each currentIcons as icon (icon)}
+    <svelte:component this={iconComponents[icon]} color={currentColors} />
+  {/each}
+</div>

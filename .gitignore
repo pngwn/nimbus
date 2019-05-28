@@ -10,6 +10,7 @@
 
 # build
 dist
+keys.js
 
 # logs
 logs
