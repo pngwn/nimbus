@@ -54,11 +54,10 @@ const dev = mode === 'development';
 const endpoints = {
   location: dev
     ? 'http://localhost:34567/.netlify/functions/getLocation?'
-    : 'https://us-central1-nimbus-200817.cloudfunctions.net/getLocation?',
+    : '.netlify/functions/getLocation?',
   weather: dev
     ? 'http://localhost:34567/.netlify/functions/getWeather?'
-    : 'https://us-central1-nimbus-200817.cloudfunctions.net/getLatLong?',
-  //weather: 'https://us-central1-nimbus-200817.cloudfunctions.net/getWeather?',
+    : '.netlify/functions/getWeather?',
 };
 
 export const searchActions = {
@@ -69,46 +68,40 @@ export const searchActions = {
 async function searchPlaces(payload, update) {
   update(v => ({ ...v, id: payload.id }));
 
-  const params = {
-    input: payload.value,
-  };
-
-  try {
-    const places = await (await get(endpoints.location, params)).json();
-
-    let correctId = true;
-    update(state => {
-      if (state.id !== payload.id) {
-        correctId = false;
-        return state;
-      }
-
-      return { ...state, places };
-    });
-
-    if (correctId) return { event: 'PLACES_LOADED' };
-  } catch (e) {
-    update(state => ({ ...state, error: e.message }));
-    return { event: 'PLACE_FAIL' };
-  }
-
-  // const places = {
-  //   predictions: [
-  //     { description: 'one' },
-  //     { description: 'two' },
-  //     { description: 'three' },
-  //     { description: 'four' },
-  //     { description: 'five' },
-  //   ],
+  // const params = {
+  //   input: payload.value,
   // };
-  // update(state => {
-  //   if (state.id !== payload.id) {
-  //     correctId = false;
-  //     return state;
-  //   }
 
-  //   return { ...state, places: places.predictions };
-  // });
+  // try {
+  //   const places = await (await get(endpoints.location, params)).json();
+
+  //   let correctId = true;
+  //   update(state => {
+  //     if (state.id !== payload.id) {
+  //       correctId = false;
+  //       return state;
+  //     }
+
+  //     return { ...state, places };
+  //   });
+
+  //   if (correctId) return { event: 'PLACES_LOADED' };
+  // } catch (e) {
+  //   update(state => ({ ...state, error: e.message }));
+  //   return { event: 'PLACE_FAIL' };
+  // }
+
+  const places = {
+    predictions: ['one', 'two', 'three', 'four', 'five'],
+  };
+  update(state => {
+    if (state.id !== payload.id) {
+      correctId = false;
+      return state;
+    }
+
+    return { ...state, places: places.predictions };
+  });
 }
 
 async function searchWeather(payload, update) {

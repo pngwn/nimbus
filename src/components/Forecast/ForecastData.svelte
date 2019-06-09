@@ -3,22 +3,6 @@
   import { fly } from 'svelte/transition';
 </script>
 
-<div class="box-content {time}-box">
-  <h1>{ time }</h1>
-  <p class="box-temp">{ weather.temperatureHi } °</p>
-
-  {#if active && !options}
-  <div out:fly="{{y: 50}}" class="box-extra">
-    <p class="box-temp temp-min">{ weather.temperatureLow } °</p>
-    <p class="box-status">{ weather.summary }</p>
-    <p class="box-wind">
-      Wind: { weather.windDirection } { weather.windSpeed }mph
-    </p>
-    <p class="box-humidity">Humidity: { weather.humidity }%</p>
-  </div>
-  {/if}
-</div>
-
 <style>
   /* @import "../../assets/styles/variables"; */
 
@@ -84,8 +68,8 @@
   }
 
   .box-extra {
-    animation: 0.5s 0.5s fadein forwards;
-    opacity: 0;
+    /* animation: 0.5s 0.5s fadein forwards; */
+    /* opacity: 0; */
   }
 
   @keyframes fadein {
@@ -110,3 +94,22 @@
     }
   }
 </style>
+
+<div class="box-content {time}-box">
+  <h1>{time}</h1>
+  <p class="box-temp">{weather.temperatureHi} °</p>
+
+  {#if active && !options}
+    <div
+      out:fly={{ y: 50 }}
+      in:fly={{ duration: 500, delay: 500, y: 50 }}
+      class="box-extra">
+      <p class="box-temp temp-min">{weather.temperatureLow} °</p>
+      <p class="box-status">{weather.summary}</p>
+      <p class="box-wind">
+        Wind: {weather.windDirection} {weather.windSpeed}mph
+      </p>
+      <p class="box-humidity">Humidity: {weather.humidity}%</p>
+    </div>
+  {/if}
+</div>

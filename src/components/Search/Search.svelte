@@ -7,7 +7,8 @@
   import { search } from '../../state';
 
   export let onData;
-  let currentData;
+  let currentData,
+    currentIndex = -1;
 
   afterUpdate(() => {
     if ($search.weather && currentData !== $search.weather) {
@@ -32,7 +33,19 @@
     );
   };
 
-  $: console.log($search);
+  const handleUp = () => {
+    if (!$search.places.length) return;
+
+    currentIndex =
+      currentIndex - 1 < 0 ? $search.places.length - 1 : currentIndex - 1;
+  };
+
+  const handleDown = () => {
+    if (!$search.places.length) return;
+
+    currentIndex =
+      currentIndex + 1 >= $search.places.length ? 0 : currentIndex + 1;
+  };
 </script>
 
 <style>
@@ -82,13 +95,15 @@
   <SearchInput
     loading={$search === 'searchingplace'}
     changeCb={val => search.send('SEARCH_PLACE', val)}
-    getGeoCb={getGeo} />
+    getGeoCb={getGeo}
+    on:up={handleUp}
+    on:down={handleDown}
+    on:enter={payload => search.send('SEARCH_WEATHER', payload)} />
 
-  {#if $search.places.length}
-    <SearchResults
-      results={$search.places}
-      clickCb={payload => search.send('SEARCH_WEATHER', payload)} />
-  {/if}
+  <SearchResults
+    results={$search.places}
+    clickCb={payload => search.send('SEARCH_WEATHER', payload)}
+    bind:currentIndex />
 
   <h1>{$search.state}</h1>
 </div>

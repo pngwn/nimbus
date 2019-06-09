@@ -9,8 +9,12 @@
   import Icons from '../components/icons/index.svelte';
 
   import data from '../state/_fake-data.js';
+  import { search } from '../state';
 
-  //import { onMount } from 'svelte';
+  $: console.log('Search: ', $search);
+
+  $: ({ weather, places, state } = $search);
+  $: options = state !== 'idle';
 
   export let child, path;
 
@@ -30,9 +34,6 @@
     transition: 0.5s;
   }
   @import '../assets/styles/variables';
-
-  /*.wrap {
-  }*/
 </style>
 
 <main>
@@ -45,7 +46,7 @@
 
   <Forecast activeDay={day} {options} activeTime={timeKey[time]}>
 
-    {#each data[day] as block, i}
+    {#each weather[day] as block, i}
       <!--  -->
       <ForecastBlock
         on:click={e => (time = i)}
@@ -64,9 +65,10 @@
 
   </Forecast>
 
-  <Icons
-    currentIcons={data[day][time].icons}
-    activeTime={timeKey[time]}
-    {options} />
-
+  {#if !options}
+    <Icons
+      currentIcons={data[day][time].icons}
+      activeTime={timeKey[time]}
+      {options} />
+  {/if}
 </main>

@@ -1,30 +1,39 @@
 <script>
   import { uuid } from '../../helpers/uuid.js';
+  import { createEventDispatcher, tick } from 'svelte';
+
+  const dispatch = createEventDispatcher();
 
   export let changeCb, getGeoCb;
-  let inputValue = '',
-    id;
+  let id, input;
 
-  function handleInput() {
-    if (!inputValue) {
+  function handleInput(val) {
+    if (!val) {
       return;
     }
 
     id = uuid();
-    changeCb({ value: inputValue, id });
+    changeCb({ value: val, id });
   }
+
+  const handleKeydown = async ({ keyCode, target }) => {
+    if (keyCode === 40) {
+      dispatch('down');
+      await tick();
+      setTimeout(function() {
+        target.selectionStart = target.selectionEnd = 10000;
+      }, 0);
+    }
+    if (keyCode === 38) {
+      dispatch('up');
+      await tick();
+      setTimeout(function() {
+        target.selectionStart = target.selectionEnd = 10000;
+      }, 0);
+    }
+  };
 </script>
 
-<div class="input">
-  <input
-    class="input-field"
-    bind:value="{inputValue}"
-    on:input="{handleInput}"
-  />
-  <button class="location-button" on:click="{getGeoCb}">
-    Use your location
-  </button>
-</div>
 <style>
   /* $font-main: Lato;
 
@@ -148,3 +157,12 @@
     }
   }
 </style>
+
+<div class="input">
+  <input
+    class="input-field"
+    bind:this={input}
+    on:input={({ target }) => handleInput(target.value)}
+    on:keydown={handleKeydown} />
+  <button class="location-button" on:click={getGeoCb}>Use your location</button>
+</div>

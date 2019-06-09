@@ -1,4 +1,5 @@
 <script>
+  import { fade } from 'svelte/transition';
   import sun from './Sun.svelte';
   import snow from './Snow.svelte';
   import rain from './Rain.svelte';
@@ -50,11 +51,13 @@
 </style>
 
 <svelte:window bind:innerWidth={width} />
-
-<div
-  style="transform: translate({translateX}px, {translateY}px); opacity: {opacity}"
-  class="icon {activeTime}">
-  {#each currentIcons as icon (icon)}
-    <svelte:component this={iconComponents[icon]} color={currentColors} />
-  {/each}
-</div>
+{#if !options}
+  <div
+    transition:fade
+    style="transform: translate({translateX}px, {translateY}px); opacity: {opacity}"
+    class="icon {activeTime}">
+    {#each currentIcons as icon (icon)}
+      <svelte:component this={iconComponents[icon]} color={currentColors} />
+    {/each}
+  </div>
+{/if}

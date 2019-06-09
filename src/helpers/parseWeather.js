@@ -4,7 +4,6 @@ import { icons, windDirection } from './weatherHelpers';
 import { max, min, mean, mode } from './arrayMaths';
 
 export const parseWeather = array => {
-  console.log(array);
   let blockedWeather = {};
   const offset = array[0].offset;
   const currentDate = addHours(getUTCDate(), offset);

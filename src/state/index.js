@@ -2,7 +2,7 @@ import { createMachineStore } from './helper';
 import { searchMachine, searchActions } from './search';
 import { writable } from 'svelte/store';
 
-const searchStore = { places: [] };
+const searchStore = { places: [], weather: { today: [], tomorrow: [] } };
 
 export const search = createMachineStore(
   searchMachine,
