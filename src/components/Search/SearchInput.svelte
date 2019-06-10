@@ -16,20 +16,26 @@
     changeCb({ value: val, id });
   }
 
-  const handleKeydown = async ({ keyCode, target }) => {
+  const putCursorAtEnd = el => {
+    if (el.setSelectionRange) {
+      var len = el.value.length * 2;
+      setTimeout(function() {
+        el.setSelectionRange(len, len);
+      }, 1);
+    } else {
+      el.value = el.value;
+    }
+  };
+
+  const handleKeydown = async ({ preventDefault, keyCode, target }) => {
     if (keyCode === 40) {
       dispatch('down');
-      await tick();
-      setTimeout(function() {
-        target.selectionStart = target.selectionEnd = 10000;
-      }, 0);
+      putCursorAtEnd(target);
     }
     if (keyCode === 38) {
+      putCursorAtEnd(target);
+
       dispatch('up');
-      await tick();
-      setTimeout(function() {
-        target.selectionStart = target.selectionEnd = 10000;
-      }, 0);
     }
   };
 </script>
