@@ -19,7 +19,7 @@
     "animejs": "^3.0.1",
     "compression": "^1.7.1",
     "date-fns": "^2.0.0-alpha.27",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.7",
     "polka": "^0.4.0",
     "sirv": "^0.2.0",
     "utf8": "^3.0.0"
